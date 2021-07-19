@@ -8,3 +8,68 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+:root {
+  --square-size: 100px;
+}
+
+header {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 2rem;
+}
+
+.game-container {
+  display: flex;
+  justify-content: center;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--square-size));
+  gap: 6px;
+  margin: auto;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border: 0.5px solid black;
+  width: var(--square-size);
+  height: var(--square-size);
+}
+
+.place-o {
+  width: 100%;
+  height: 100%;
+  border: 2px solid black;
+  border-radius: 50%;
+}
+
+.place-x {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.place-x::before,
+.place-x::after {
+  content: '';
+  position: absolute;
+  border: 2px solid black;
+  width: 120%;
+}
+
+.place-x::before {
+  transform: rotate(45deg);
+}
+
+.place-x::after {
+  transform: rotate(315deg);
+}
