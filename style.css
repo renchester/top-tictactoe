@@ -19,6 +19,10 @@ header {
   padding: 2rem;
 }
 
+body {
+  position: relative;
+}
+
 .game-container {
   display: flex;
   justify-content: center;
@@ -29,6 +33,7 @@ header {
   grid-template-columns: repeat(3, var(--square-size));
   gap: 6px;
   margin: auto;
+  background-color: aqua;
 }
 
 .square {
@@ -37,9 +42,9 @@ header {
   align-items: center;
   padding: 0.5rem;
   box-sizing: border-box;
-  border: 0.5px solid black;
   width: var(--square-size);
   height: var(--square-size);
+  background-color: white;
 }
 
 .place-o {
@@ -72,4 +77,16 @@ header {
 
 .place-x::after {
   transform: rotate(315deg);
+}
+
+/*  MODAL WINNER */
+.modal-winner {
+  background-color: aqua;
+  position: fixed;
+  padding: 3rem;
+}
+
+/*  HELPER STYLES */
+.hidden {
+  display: none;
 }

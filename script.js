@@ -22,7 +22,7 @@ const player2 = Player('x');
 const controlGame = (() => {
   const _squares = document.querySelectorAll('.square');
   let currPlayer = _switchPlayer();
-  let win;
+  let result;
 
   function _switchPlayer(player = player1) {
     return player === player1 ? player2 : player1;
@@ -31,7 +31,7 @@ const controlGame = (() => {
   function _placeTicTac(e) {
     const squareEl = e.target.closest('.square');
 
-    if (win) return;
+    if (result) return;
     if (squareEl.dataset.filled === 'true') return;
 
     game.board[squareEl.dataset.id] = currPlayer.getTictac();
@@ -63,39 +63,45 @@ const controlGame = (() => {
         game.board[winningIndices[i][0]] === game.board[winningIndices[i][1]] &&
         game.board[winningIndices[i][0]] === game.board[winningIndices[i][2]]
       ) {
-        win = true;
+        result = 'win';
+        controlDisplay.displayWinner();
       }
     }
   }
 
   function _checkDraw() {
     if (Array.from(_squares).every((el) => el.dataset.filled === 'true')) {
-      console.log('DRAW');
+      result = 'draw';
     }
   }
 
-  const addSquareEvents = () => {
+  function addSquareEvents() {
     _squares.forEach((square) =>
       square.addEventListener('click', _placeTicTac)
     );
-  };
+  }
 
-  return { addSquareEvents };
+  return { addSquareEvents, currPlayer, result };
 })();
 
 const controlDisplay = (() => {
   const _squares = document.querySelectorAll('.square');
+  const _modalWinner = document.querySelector('.modal-winner');
 
-  const fillBoard = () => {
+  function fillBoard() {
     _squares.forEach(
       (square) =>
         (square.innerHTML = `<div class="place-${
           game.board.flat()[square.dataset.id]
         }"></div> `)
     );
-  };
+  }
 
-  return { fillBoard };
+  function displayWinner() {
+    _modalWinner.classList.remove('hidden');
+  }
+
+  return { fillBoard, displayWinner };
 })();
 
 controlGame.addSquareEvents();
