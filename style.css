@@ -13,9 +13,15 @@
   --square-size: 100px;
 }
 
+html {
+  height: 100vh;
+  background: linear-gradient(to bottom left, #ff9dba, #f2bcff, #b0c4ff);
+}
+
 header {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 7rem;
+  font-family: 'Londrina Solid', Arial, Helvetica, sans-serif;
   padding: 2rem;
 }
 
@@ -79,11 +85,54 @@ body {
   transform: rotate(315deg);
 }
 
-/*  MODAL WINNER */
-.modal-winner {
-  background-color: aqua;
-  position: fixed;
-  padding: 3rem;
+/*  CHOOSE OPPONENT */
+
+.game-opponent {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: max-content;
+}
+
+.opponent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3.5px solid black;
+  border-radius: 32px;
+  margin: 1rem auto;
+  box-shadow: 0px 0px 4px 0px black;
+  background-color: white;
+  transition: transform ease-in-out 300ms;
+  cursor: pointer;
+}
+
+.opponent:hover {
+  transform: scale(1.1);
+}
+
+.material-icons-outlined.opp-player-1,
+.material-icons-outlined.opp-player-2,
+.material-icons-outlined.opp-ai {
+  font-size: 6rem;
+  font-weight: 300;
+  padding: 0.3em;
+}
+
+.material-icons-outlined.opp-player-1 {
+  color: #6987c9;
+}
+
+.material-icons-outlined.opp-player-2,
+.material-icons-outlined.opp-ai {
+  color: #7880b5;
+}
+
+.opp-vs {
+  font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
+  font-size: 4rem;
+  text-align: end;
+  padding-top: 1rem;
 }
 
 /*  HELPER STYLES */
