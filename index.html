@@ -22,18 +22,44 @@
     <header>
       <p class="title">TICTACTOE</p>
     </header>
-    <div class="game-opponent">
-      <div class="opponent opp-player">
+    <div class="game-opponent hidden">
+      <div class="opponent opp-player" data-opponent="player">
         <span class="material-icons-outlined opp-player-1"> face </span>
         <span class="opp-vs">VS</span>
         <span class="material-icons-outlined opp-player-2"> face </span>
       </div>
-      <div class="opponent opp-ai">
+      <div class="opponent opp-ai" data-opponent="ai">
         <span class="material-icons-outlined opp-player-1"> face </span>
         <span class="opp-vs">VS</span>
         <span class="material-icons-outlined opp-ai"> smart_toy </span>
       </div>
     </div>
+
+    <div class="game-players">
+      <div class="players-stats">
+        <div class="player-1 stats">
+          <span class="material-icons-outlined opp-player-1"> face </span>
+          <input
+            type="text"
+            class="player-1 name-input"
+            placeholder="Player 1"
+            maxlength="10"
+          />
+        </div>
+        <span class="opp-vs">VS</span>
+        <div class="player-2 stats">
+          <span class="material-icons-outlined opp-player-2"> face </span>
+          <input
+            type="text"
+            class="player-2 name-input"
+            placeholder="Player 2"
+            maxlength="10"
+          />
+        </div>
+      </div>
+      <button class="btn start-game">START!</button>
+    </div>
+
     <main class="game-container hidden">
       <div class="game-board">
         <div class="square square-0" data-id="0" data-filled="false">
