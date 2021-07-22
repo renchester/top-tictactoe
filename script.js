@@ -12,13 +12,44 @@ const game = (() => {
 // Set players
 const Player = (tictac, name) => {
   const getTictac = () => tictac;
-  const getName = () => alert('Your name please');
-  return { getTictac, getName };
+  const defaultName = name;
+  return { getTictac, defaultName };
 };
 
-const player1 = Player('o');
-const player2 = Player('x');
+const player1 = Player('o', 'Player 1');
+const player2 = Player('x', 'Player 2');
 
+// Game initializer module
+
+const initializeGame = (() => {
+  let opponent;
+  const _opponents = document.querySelectorAll('.opponent');
+  const _opponentPlayer = document.querySelector('.opponent.opp-player');
+  const _opponentAI = document.querySelector('.opponent.opp-ai');
+  const _namePlayer1 = document.querySelector('.player-1.name-input');
+  const _namePlayer2 = document.querySelector('.player-2.name-input');
+  const _btnStartGame = document.querySelector('.start-game');
+
+  function _chooseOpponent(e) {
+    opponent = e.target.closest('.opponent').dataset.opponent;
+    controlDisplay.showPlayers();
+  }
+
+  function _startGame(e) {
+    player1.name = _namePlayer1.value;
+    player2.name = _namePlayer2.value;
+
+    controlDisplay.showGame();
+  }
+
+  _opponents.forEach((el) => el.addEventListener('click', _chooseOpponent));
+
+  _btnStartGame.addEventListener('click', _startGame);
+
+  return { opponent };
+})();
+
+// Game controller module
 const controlGame = (() => {
   const _squares = document.querySelectorAll('.square');
   let currPlayer = _switchPlayer();
@@ -37,10 +68,10 @@ const controlGame = (() => {
     game.board[squareEl.dataset.id] = currPlayer.getTictac();
     squareEl.dataset.filled = 'true';
 
-    currPlayer = _switchPlayer(currPlayer);
-    controlDisplay.fillBoard();
     _checkWin();
     _checkDraw();
+    currPlayer = _switchPlayer(currPlayer);
+    controlDisplay.fillBoard();
   }
 
   function _checkWin() {
@@ -84,25 +115,48 @@ const controlGame = (() => {
   return { addSquareEvents, currPlayer, result };
 })();
 
+// Display Controller Module
 const controlDisplay = (() => {
   const _squares = document.querySelectorAll('.square');
-  const _modalWinner = document.querySelector('.modal-winner');
+  const _gameOpponents = document.querySelector('.game-opponents');
+  const _gamePlayers = document.querySelector('.game-players');
+  const _gameContainer = document.querySelector('.game-container');
+  const _winLog = document.querySelector('.win-log');
+  const _winningPlayerMessage = document.querySelector(
+    '.win-message.player-win'
+  );
+
+  function showPlayers() {
+    _gameOpponents.classList.add('hidden');
+    _gamePlayers.classList.remove('hidden');
+  }
+
+  function showGame() {
+    _gamePlayers.classList.add('hidden');
+    _gameContainer.classList.remove('hidden');
+  }
 
   function fillBoard() {
     _squares.forEach(
       (square) =>
-        (square.innerHTML = `<div class="place-${
+        (square.innerHTML = `<div class="tictac">${
           game.board.flat()[square.dataset.id]
-        }"></div> `)
+        }</div>`)
     );
   }
 
   function displayWinner() {
-    _modalWinner.classList.remove('hidden');
+    console.log(controlGame.currPlayer);
+    _winningPlayerMessage.textContent = controlGame.currPlayer.defaultName;
+    _winLog.classList.remove('hidden');
   }
 
-  return { fillBoard, displayWinner };
+  return { fillBoard, showPlayers, showGame, displayWinner };
 })();
 
 controlGame.addSquareEvents();
 controlDisplay.fillBoard();
+
+// `<div class="place-${
+//           game.board.flat()[square.dataset.id]
+//         }"></div> `
