@@ -55,7 +55,7 @@ const controlGame = (() => {
   let currPlayer = _switchPlayer();
   let result;
 
-  function _switchPlayer(player = player1) {
+  function _switchPlayer(player = player2) {
     return player === player1 ? player2 : player1;
   }
 
@@ -70,8 +70,11 @@ const controlGame = (() => {
 
     _checkWin();
     _checkDraw();
-    currPlayer = _switchPlayer(currPlayer);
     controlDisplay.fillBoard();
+
+    if (result) return;
+
+    currPlayer = _switchPlayer(currPlayer);
   }
 
   function _checkWin() {
@@ -95,7 +98,7 @@ const controlGame = (() => {
         game.board[winningIndices[i][0]] === game.board[winningIndices[i][2]]
       ) {
         result = 'win';
-        controlDisplay.displayWinner();
+        controlDisplay.displayWinner(currPlayer);
       }
     }
   }
@@ -103,6 +106,7 @@ const controlGame = (() => {
   function _checkDraw() {
     if (Array.from(_squares).every((el) => el.dataset.filled === 'true')) {
       result = 'draw';
+      controlDisplay.displayDraw();
     }
   }
 
@@ -145,13 +149,19 @@ const controlDisplay = (() => {
     );
   }
 
-  function displayWinner() {
-    console.log(controlGame.currPlayer);
-    _winningPlayerMessage.textContent = controlGame.currPlayer.defaultName;
+  function displayWinner(currPlayer) {
+    _winningPlayerMessage.textContent = currPlayer.name
+      ? currPlayer.name
+      : currPlayer.defaultName;
     _winLog.classList.remove('hidden');
   }
 
-  return { fillBoard, showPlayers, showGame, displayWinner };
+  function displayDraw() {
+    _winningPlayerMessage.textContent = 'Draw! No one';
+    _winLog.classList.remove('hidden');
+  }
+
+  return { fillBoard, showPlayers, showGame, displayWinner, displayDraw };
 })();
 
 controlGame.addSquareEvents();
