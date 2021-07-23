@@ -28,7 +28,7 @@
         <span class="opp-vs">VS</span>
         <span class="material-icons-outlined opp-player-2"> face </span>
       </div>
-      <div class="opponent opp-ai" data-opponent="ai">
+      <div class="opponent opp-computer" data-opponent="ai">
         <span class="material-icons-outlined opp-player-1"> face </span>
         <span class="opp-vs">VS</span>
         <span class="material-icons-outlined opp-ai"> smart_toy </span>
@@ -61,8 +61,14 @@
     </div>
 
     <main class="game-container hidden">
-      <div class="player-1 scoresheet"></div>
       <div class="game-board">
+        <div class="player-1 scoresheet player-active">
+          <span class="material-icons-outlined opp-player-1 scoresheet-icon">
+            face
+          </span>
+          <div class="player-1 name">Player 1</div>
+          <div class="player-1 score">0</div>
+        </div>
         <div class="square square-0" data-id="0" data-filled="false">
           <!-- <div class="place-o"</div> -->
         </div>
@@ -80,7 +86,15 @@
           <p class="win-message player-win">Player 1</p>
           <p class="win-message">Wins!</p>
         </div>
+        <div class="player-2 scoresheet">
+          <span class="material-icons-outlined opp-player-2 scoresheet-icon">
+            face
+          </span>
+          <div class="player-2 name">Player 2</div>
+          <div class="player-2 score">0</div>
+        </div>
       </div>
+      <div class="btn play-again hidden">PLAY AGAIN</div>
     </main>
     <script src="script.js"></script>
   </body>

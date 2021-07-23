@@ -13,6 +13,8 @@
   --square-size: 120px;
   --player-1-color: #6987c9;
   --player-2-color: #7880b5;
+  --btn-color: #adbceb;
+  --scoresheet-offset: -200px;
 }
 
 html {
@@ -31,8 +33,25 @@ body {
   position: relative;
 }
 
+.btn {
+  cursor: pointer;
+}
+
+.player-1,
+.opp-player-1 {
+  color: var(--player-1-color);
+}
+
+.player-2,
+.opp-player-2,
+.opp-ai {
+  color: var(--player-2-color);
+}
+
 .game-container {
+  position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 
@@ -80,6 +99,65 @@ body {
   padding-top: 15%;
 }
 
+/*  SCORESHEETS */
+.scoresheet {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 25px;
+  padding-bottom: 1rem;
+  box-shadow: 0px 5px 5px 0px rgba(102, 26, 86, 0.267);
+}
+
+.player-1.scoresheet {
+  left: var(--scoresheet-offset);
+}
+
+.player-2.scoresheet {
+  right: var(--scoresheet-offset);
+}
+
+.player-active {
+  animation-name: sheet-bob;
+  animation-duration: 750ms;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes sheet-bob {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(-7.5%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.material-icons-outlined.opp-player-1.scoresheet-icon,
+.material-icons-outlined.opp-player-2.scoresheet-icon {
+  font-size: 5rem;
+}
+
+.score,
+.name {
+  font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
+}
+
+.score {
+  font-size: 3rem;
+}
+
+.name {
+  font-size: 2rem;
+  padding: 0 1rem 1.5rem;
+}
+
 /*  WINNER MESSAGE */
 
 .win-log {
@@ -94,13 +172,29 @@ body {
   text-align: center;
   justify-content: center;
   align-items: center;
-  background-color: rgba(238, 130, 238, 0.555);
+  background-color: rgba(18, 36, 83, 0.952);
+  color: white;
   border-radius: 25px;
 }
 
 .win-message {
   font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
   font-size: 3rem;
+}
+
+.btn.play-again {
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background-color: var(--btn-color);
+  border-radius: 10px;
+  box-shadow: 0px 5px 5px 0px rgba(112, 73, 112, 0.479);
+  font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  transition: transform ease-in-out 100ms;
+}
+
+.btn.play-again:hover {
+  transform: scale(1.1);
 }
 
 /*  CHOOSE OPPONENT */
@@ -136,15 +230,6 @@ body {
   padding: 0.3em;
 }
 
-.material-icons-outlined.opp-player-1 {
-  color: var(--player-1-color);
-}
-
-.material-icons-outlined.opp-player-2,
-.material-icons-outlined.opp-ai {
-  color: var(--player-2-color);
-}
-
 .opp-vs {
   font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
   font-size: 4rem;
@@ -160,7 +245,7 @@ body {
   margin: auto;
   background-color: white;
   border-radius: 24px;
-  box-shadow: 0px 5px 10px 0px rgba(102, 26, 85, 0.678);
+  box-shadow: 0px 5px 10px 0px rgba(102, 26, 86, 0.884);
   padding: 2em 0;
 }
 
@@ -180,10 +265,27 @@ body {
   height: max-content;
   padding: 1rem;
   background-color: transparent;
+  animation-name: eminput;
+  animation-duration: 750ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes eminput {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(-15%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
 }
 
 .name-input:focus {
   outline: none;
+  animation: none;
 }
 
 .name-input,
@@ -193,21 +295,13 @@ body {
   text-align: center;
 }
 
-.player-1.name-input {
-  color: var(--player-1-color);
-}
-
-.player-2.name-input {
-  color: var(--player-2-color);
-}
-
 .btn.start-game {
   width: max-content;
   margin: auto;
   padding: 1rem 2rem;
   font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
   font-size: 2rem;
-  background-color: #adbceb;
+  background-color: var(--btn-color);
   border-radius: 20px;
   box-shadow: 0px 5px 5px 0px #4a5575e5;
   cursor: pointer;

@@ -10,10 +10,12 @@ const game = (() => {
 })();
 
 // Set players
+
 const Player = (tictac, name) => {
   const getTictac = () => tictac;
   const defaultName = name;
-  return { getTictac, defaultName };
+  const score = 0;
+  return { getTictac, defaultName, score };
 };
 
 const player1 = Player('o', 'Player 1');
@@ -26,8 +28,8 @@ const initializeGame = (() => {
   const _opponents = document.querySelectorAll('.opponent');
   const _opponentPlayer = document.querySelector('.opponent.opp-player');
   const _opponentAI = document.querySelector('.opponent.opp-ai');
-  const _namePlayer1 = document.querySelector('.player-1.name-input');
-  const _namePlayer2 = document.querySelector('.player-2.name-input');
+  const _nameInputPlayer1 = document.querySelector('.player-1.name-input');
+  const _nameInputPlayer2 = document.querySelector('.player-2.name-input');
   const _btnStartGame = document.querySelector('.start-game');
 
   function _chooseOpponent(e) {
@@ -36,10 +38,13 @@ const initializeGame = (() => {
   }
 
   function _startGame(e) {
-    player1.name = _namePlayer1.value;
-    player2.name = _namePlayer2.value;
+    player1.name = _nameInputPlayer1.value;
+    player2.name = _nameInputPlayer2.value;
 
     controlDisplay.showGame();
+
+    if (_nameInputPlayer1.value && _nameInputPlayer2.value)
+      controlDisplay.displayNames();
   }
 
   _opponents.forEach((el) => el.addEventListener('click', _chooseOpponent));
@@ -50,6 +55,7 @@ const initializeGame = (() => {
 })();
 
 // Game controller module
+
 const controlGame = (() => {
   const _squares = document.querySelectorAll('.square');
   let currPlayer = _switchPlayer();
@@ -68,12 +74,13 @@ const controlGame = (() => {
     game.board[squareEl.dataset.id] = currPlayer.getTictac();
     squareEl.dataset.filled = 'true';
 
-    _checkWin();
     _checkDraw();
+    _checkWin();
     controlDisplay.fillBoard();
 
     if (result) return;
 
+    controlDisplay.displayActive(currPlayer);
     currPlayer = _switchPlayer(currPlayer);
   }
 
@@ -98,7 +105,11 @@ const controlGame = (() => {
         game.board[winningIndices[i][0]] === game.board[winningIndices[i][2]]
       ) {
         result = 'win';
+        currPlayer.score++;
         controlDisplay.displayWinner(currPlayer);
+
+        const _btnPlayAgain = document.querySelector('.btn.play-again');
+        _btnPlayAgain.addEventListener('click', playAgain);
       }
     }
   }
@@ -107,6 +118,9 @@ const controlGame = (() => {
     if (Array.from(_squares).every((el) => el.dataset.filled === 'true')) {
       result = 'draw';
       controlDisplay.displayDraw();
+
+      const _btnPlayAgain = document.querySelector('.btn.play-again');
+      _btnPlayAgain.addEventListener('click', playAgain);
     }
   }
 
@@ -116,15 +130,36 @@ const controlGame = (() => {
     );
   }
 
+  function _resetFillStatus() {
+    result = null;
+    _squares.forEach((square) => (square.dataset.filled = 'false'));
+  }
+
+  function playAgain() {
+    game.board = ['', '', '', '', '', '', '', '', ''];
+    _resetFillStatus();
+    currPlayer = _switchPlayer();
+    controlDisplay.fillBoard();
+    controlDisplay.resetGameDisplay();
+  }
+
   return { addSquareEvents, currPlayer, result };
 })();
 
-// Display Controller Module
+// Display controller module
+
 const controlDisplay = (() => {
   const _squares = document.querySelectorAll('.square');
   const _gameOpponents = document.querySelector('.game-opponents');
   const _gamePlayers = document.querySelector('.game-players');
   const _gameContainer = document.querySelector('.game-container');
+  const _namePlayer1 = document.querySelector('.player-1.name');
+  const _namePlayer2 = document.querySelector('.player-2.name');
+  const _ssPlayer1 = document.querySelector('.player-1.scoresheet');
+  const _ssPlayer2 = document.querySelector('.player-2.scoresheet');
+  const _scorePlayer1 = document.querySelector('.player-1.score');
+  const _scorePlayer2 = document.querySelector('.player-2.score');
+  const _btnPlayAgain = document.querySelector('.btn.play-again');
   const _winLog = document.querySelector('.win-log');
   const _winningPlayerMessage = document.querySelector(
     '.win-message.player-win'
@@ -143,10 +178,24 @@ const controlDisplay = (() => {
   function fillBoard() {
     _squares.forEach(
       (square) =>
-        (square.innerHTML = `<div class="tictac">${
-          game.board.flat()[square.dataset.id]
-        }</div>`)
+        (square.innerHTML = `<div class="tictac
+        ">${game.board.flat()[square.dataset.id]}</div>`)
     );
+  }
+
+  function displayNames() {
+    _namePlayer1.textContent = player1.name;
+    _namePlayer2.textContent = player2.name;
+  }
+
+  function displayActive(currPlayer) {
+    document
+      .querySelectorAll('.scoresheet')
+      .forEach((sheet) => sheet.classList.remove('player-active'));
+
+    currPlayer === player1
+      ? _ssPlayer2.classList.add('player-active')
+      : _ssPlayer1.classList.add('player-active');
   }
 
   function displayWinner(currPlayer) {
@@ -154,19 +203,38 @@ const controlDisplay = (() => {
       ? currPlayer.name
       : currPlayer.defaultName;
     _winLog.classList.remove('hidden');
+    _btnPlayAgain.classList.remove('hidden');
+
+    _scorePlayer1.textContent = player1.score;
+    _scorePlayer2.textContent = player2.score;
   }
 
   function displayDraw() {
     _winningPlayerMessage.textContent = 'Draw! No one';
     _winLog.classList.remove('hidden');
+    _btnPlayAgain.classList.remove('hidden');
+
+    document
+      .querySelectorAll('.scoresheet')
+      .forEach((sheet) => sheet.classList.remove('player-active'));
   }
 
-  return { fillBoard, showPlayers, showGame, displayWinner, displayDraw };
+  function resetGameDisplay() {
+    _btnPlayAgain.classList.add('hidden');
+    _winLog.classList.add('hidden');
+  }
+
+  return {
+    fillBoard,
+    showPlayers,
+    showGame,
+    displayActive,
+    displayWinner,
+    displayDraw,
+    displayNames,
+    resetGameDisplay,
+  };
 })();
 
 controlGame.addSquareEvents();
 controlDisplay.fillBoard();
-
-// `<div class="place-${
-//           game.board.flat()[square.dataset.id]
-//         }"></div> `
