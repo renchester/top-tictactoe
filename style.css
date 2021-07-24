@@ -237,7 +237,8 @@ body {
   padding-top: 1rem;
 }
 
-/*  GAME PLAYERS */
+/*  GAME OPPONENT - PLAYERS */
+
 .game-players {
   display: flex;
   flex-direction: column;
@@ -310,6 +311,51 @@ body {
 
 .btn.start-game:hover {
   transform: scale(1.1);
+}
+
+/*  GAME OPPONENT - AI */
+.game-ai {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
+  background-color: white;
+  padding: 3rem;
+  border-radius: 32px;
+  box-shadow: 0px 5px 5px 0px rgba(102, 26, 85, 0.678);
+}
+
+.ai-label {
+  font-size: 3rem;
+  text-align: center;
+}
+
+.diff-level {
+  border-radius: 24px;
+  box-shadow: 0px 5px 5px 0px rgba(102, 26, 85, 0.678);
+  margin: 1.5rem auto;
+  padding: 1.5rem 4rem;
+  transition: transform ease-in-out 300ms;
+  cursor: pointer;
+  text-align: center;
+  font-size: 2rem;
+  color: white;
+}
+
+.diff-level:hover {
+  transform: scale(1.1);
+}
+
+.diff-level.easy {
+  background-color: var(--player-1-color);
+}
+
+.diff-level.hard {
+  background-color: var(--player-2-color);
 }
 
 /*  HELPER STYLES */
