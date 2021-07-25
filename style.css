@@ -246,11 +246,12 @@ body {
   cursor: pointer;
   margin: auto;
   transition: all ease-in-out 300ms;
+  color: #5e67a3;
 }
 
 .back-div:hover {
   transform: scale(1.1);
-  color: #a00030;
+  color: #323b75;
 }
 
 .material-icons-outlined.go-back {
@@ -396,6 +397,7 @@ footer {
   width: 100%;
   margin-top: 2.4rem;
   padding: 1rem;
+  color: #5e67a3;
 }
 
 .footer-link {
@@ -415,7 +417,7 @@ footer {
 .footer-link:link,
 .footer-link:visited {
   text-decoration: none;
-  color: rgb(51, 51, 51);
+  color: #424870;
 }
 
 /*  HELPER STYLES */
