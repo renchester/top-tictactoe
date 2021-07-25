@@ -387,7 +387,39 @@ body {
   background-color: var(--player-2-color);
 }
 
+/* FOOTER */
+
+footer {
+  position: fixed;
+  bottom: 0;
+  margin: auto;
+  width: 100%;
+  margin-top: 2.4rem;
+  padding: 1rem;
+}
+
+.footer-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-desc {
+  font-family: 'Comfortaa', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+    sans-serif;
+  padding-left: 1em;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.footer-link:link,
+.footer-link:visited {
+  text-decoration: none;
+  color: rgb(51, 51, 51);
+}
+
 /*  HELPER STYLES */
+
 .hidden {
   display: none;
 }
