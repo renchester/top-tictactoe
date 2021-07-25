@@ -33,20 +33,24 @@ const initializeGame = (() => {
   const _nameInputPlayer2 = document.querySelector('.player-2.name-input');
   const _btnStartGame = document.querySelector('.start-game');
   const _diffLevels = document.querySelectorAll('.diff-level');
+  const _goBackGame = document.querySelector('.back-div.for-game');
+  const _goBackAI = document.querySelector('.back-div.for-ai');
+  const _goBackPlayer = document.querySelector('.back-div.for-players');
 
   function _chooseOpponent(e) {
     opponent = e.target.closest('.opponent').dataset.opponent;
     opponent === 'player'
       ? controlDisplay.showPlayers()
       : controlDisplay.showDifficulty();
-
-    controlDisplay.changeNamesForAI();
   }
 
   function _chooseDiffLevel(e) {
     diffLevel = e.target.closest('.diff-level').dataset.difficulty;
 
+    if (diffLevel === 'hard') return;
+
     controlDisplay.showGame();
+    controlDisplay.changeNamesForAI();
   }
 
   function _startGame(e) {
@@ -59,11 +63,51 @@ const initializeGame = (() => {
       controlDisplay.displayNames();
   }
 
+  function _resetAndGoBack() {
+    opponent = null;
+    diffLevel = null;
+
+    player1.score = 0;
+    player2.score = 0;
+    ai.score = 0;
+    player1.name = '';
+    player2.name = '';
+
+    controlDisplay.goBackFromGame();
+    controlGame.playAgain();
+  }
+
+  function _resetAndGoBackFromAI() {
+    opponent = null;
+    diffLevel = null;
+
+    player1.name = '';
+    player2.name = '';
+
+    controlDisplay.goBackFromAI();
+    controlGame.playAgain();
+  }
+
+  function _resetAndGoBackFromPlayers() {
+    opponent = null;
+    diffLevel = null;
+
+    player1.name = '';
+    player2.name = '';
+
+    controlDisplay.goBackFromPlayers();
+    controlGame.playAgain();
+  }
+
   _opponents.forEach((el) => el.addEventListener('click', _chooseOpponent));
 
   _diffLevels.forEach((el) => el.addEventListener('click', _chooseDiffLevel));
 
   _btnStartGame.addEventListener('click', _startGame);
+
+  _goBackGame.addEventListener('click', _resetAndGoBack);
+  _goBackAI.addEventListener('click', _resetAndGoBackFromAI);
+  _goBackPlayer.addEventListener('click', _resetAndGoBackFromPlayers);
 
   return { opponent, diffLevel };
 })();
@@ -86,7 +130,6 @@ const controlGame = (() => {
   function _placeTicTac(e) {
     const squareEl = e.target.closest('.square');
 
-    if (result) return;
     if (squareEl.dataset.filled === 'true') return;
 
     game.board[squareEl.dataset.id] = currPlayer.getTictac();
@@ -291,6 +334,24 @@ const controlDisplay = (() => {
     _winLog.classList.add('hidden');
   }
 
+  function goBackFromGame() {
+    _gameContainer.classList.add('hidden');
+    _gameOpponents.classList.remove('hidden');
+
+    _scorePlayer1.textContent = 0;
+    _scorePlayer2.textContent = 0;
+  }
+
+  function goBackFromAI() {
+    _gameAI.classList.add('hidden');
+    _gameOpponents.classList.remove('hidden');
+  }
+
+  function goBackFromPlayers() {
+    _gamePlayers.classList.add('hidden');
+    _gameOpponents.classList.remove('hidden');
+  }
+
   return {
     fillBoard,
     showPlayers,
@@ -302,6 +363,9 @@ const controlDisplay = (() => {
     displayDraw,
     displayNames,
     resetGameDisplay,
+    goBackFromGame,
+    goBackFromAI,
+    goBackFromPlayers,
   };
 })();
 
