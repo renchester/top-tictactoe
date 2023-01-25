@@ -4,10 +4,14 @@
     "commonjs": true,
     "es2021": true
   },
-  "extends": ["airbnb-base", "Prettier"],
+  "extends": "airbnb-base",
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest"
   },
-  "rules": {}
+  "rules": {
+    "wrap-iife": ["error", "inside"],
+    "func-names": ["error", "never"],
+    "no-plusplus": "off"
+  }
 }
