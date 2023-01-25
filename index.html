@@ -22,43 +22,106 @@
     <div class="container">
       <div class="logo">TIC-TAC-TOE</div>
 
-      <div class="screen--select hidden">
+      <div class="screen--select">
         <div class="select-vs select-vs--player">
-          <span class="material-symbols-outlined"> face </span>
+          <span class="select-vs--icon material-symbols-outlined"> face </span>
           <span class="vs-text">VS</span>
-          <span class="material-symbols-outlined"> face </span>
+          <span class="select-vs--icon material-symbols-outlined"> face </span>
         </div>
         <div class="select-vs select-vs--ai">
-          <span class="material-symbols-outlined"> face </span>
+          <span class="select-vs--icon material-symbols-outlined"> face </span>
           <span class="vs-text">VS</span>
-          <span class="material-symbols-outlined"> smart_toy </span>
+          <span class="select-vs--icon material-symbols-outlined">
+            smart_toy
+          </span>
         </div>
       </div>
 
       <div class="screen--name-input hidden">
-        <div class="name-input--player-1">
-          <span class="material-symbols-outlined">face</span
+        <div class="name-input name-input--player-1">
+          <span class="name-input--icon material-symbols-outlined">face</span
           ><input type="text" value="Player 1" class="input--player1" />
         </div>
         <div class="vs-text">VS</div>
-        <div class="name-input--player-2">
-          <span class="material-symbols-outlined">face</span>
+        <div class="name-input name-input--player-2">
+          <span class="name-input--icon material-symbols-outlined">face</span>
           <input type="text" value="Player 2" class="input--player2" />
         </div>
         <button type="button" class="btn btn-start">Start!</button>
       </div>
 
-      <div class="screen--board">
+      <div class="screen--board hidden">
         <div class="board">
-          <div class="board-cell cell-1" data-id="1"></div>
-          <div class="board-cell cell-2" data-id="2"></div>
-          <div class="board-cell cell-3" data-id="3"></div>
-          <div class="board-cell cell-4" data-id="4"></div>
-          <div class="board-cell cell-5" data-id="5"></div>
-          <div class="board-cell cell-6" data-id="6"></div>
-          <div class="board-cell cell-7" data-id="7"></div>
-          <div class="board-cell cell-8" data-id="8"></div>
-          <div class="board-cell cell-9" data-id="9"></div>
+          <div class="scoresheet scoresheet--player1 hidden">
+            <span class="scoresheet--icon material-symbols-outlined">face</span>
+            <div class="scoresheet--player-name">Chester</div>
+            <div class="scoresheet--player-score">0</div>
+          </div>
+          <div class="scoresheet scoresheet--player2 hidden">
+            <span class="scoresheet--icon material-symbols-outlined">face</span>
+            <div class="scoresheet--player-name">Ren</div>
+            <div class="scoresheet--player-score">1</div>
+          </div>
+
+          <div
+            class="board-cell cell-0"
+            data-id="0"
+            data-row="0"
+            data-column="0"
+          ></div>
+          <div
+            class="board-cell cell-1"
+            data-id="1"
+            data-row="0"
+            data-column="1"
+          ></div>
+          <div
+            class="board-cell cell-2"
+            data-id="2"
+            data-row="0"
+            data-column="2"
+          ></div>
+          <div
+            class="board-cell cell-3"
+            data-id="3"
+            data-row="1"
+            data-column="0"
+          ></div>
+          <div
+            class="board-cell cell-4"
+            data-id="4"
+            data-row="1"
+            data-column="1"
+          ></div>
+          <div
+            class="board-cell cell-5"
+            data-id="5"
+            data-row="1"
+            data-column="2"
+          ></div>
+          <div
+            class="board-cell cell-6"
+            data-id="6"
+            data-row="2"
+            data-column="0"
+          ></div>
+          <div
+            class="board-cell cell-7"
+            data-id="7"
+            data-row="2"
+            data-column="1"
+          ></div>
+          <div
+            class="board-cell cell-8"
+            data-id="8"
+            data-row="2"
+            data-column="2"
+          ></div>
+
+          <div class="display-winner hidden">
+            <div class="display-winner--overlay"></div>
+            <span class="display-winner--text">Player 1 wins!</span>
+          </div>
         </div>
         <div class="btn btn-reset hidden">Reset All</div>
         <button type="button" class="btn btn-back">Go back</button>
