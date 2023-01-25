@@ -2,25 +2,45 @@
 
 const boardState = (function () {
   let gamePlay = true;
+  let player1;
+  let player2;
   let currentPlayer;
+  let board = [];
+
+  function init() {
+    displayController.addEventsOnInit();
+  }
+
+  function startGame(name1, name2) {
+    player1 = Player(name1, 'X');
+    player2 = Player(name2, 'O');
+
+    gamePlay = true;
+    currentPlayer = player1;
+
+    displayController.addEventsOnBoard();
+  }
 
   function calculateResult() {
-    let win = false;
+    let result = false;
+
+    // Check for tie
+    if (board.every((item) => item > 1)) result = 'tie';
 
     //  Check win through rows
     if (currentPlayer.getRow().find((x) => x === 3)) {
-      win = true;
+      result = 'win';
     }
     // Check win through columns
     if (currentPlayer.getColumn().find((x) => x === 3)) {
-      win = true;
+      result = 'win';
     }
     //  Check win through diagonals
     if (currentPlayer.getDiagonals().find((x) => x === 3)) {
-      win = true;
+      result = 'win';
     }
 
-    return win;
+    return result;
   }
 
   function goToNextPlayer() {
@@ -31,18 +51,12 @@ const boardState = (function () {
     return currentPlayer.getMark();
   }
 
-  function startGame() {
-    gamePlay = true;
-    currentPlayer = player1;
-  }
+  function endGame(result) {
+    if (result === 'win') currentPlayer.incrementScore();
 
-  function endGame() {
-    currentPlayer.incrementScore();
     gamePlay = false;
 
-    console.log(`${currentPlayer.getName()} won`);
-
-    displayController.displayResult();
+    displayController.displayResult(result);
   }
 
   function checkDiagonals(row, col) {
@@ -53,7 +67,10 @@ const boardState = (function () {
     if (+row + +col + 1 === 3) currentPlayer.incrementDiagonal2();
   }
 
-  function addToBoard(rowIndex, colIndex) {
+  function addToBoard(cellIndex, rowIndex, colIndex) {
+    // Fill up board array with user input
+    board[cellIndex] = getMarkToDisplay();
+
     // User input is tabulated in row and column values
     currentPlayer.incrementRow(rowIndex);
     currentPlayer.incrementColumn(colIndex);
@@ -61,24 +78,43 @@ const boardState = (function () {
     // Diagonal values are checked for win condition
     checkDiagonals(rowIndex, colIndex);
 
-    if (calculateResult()) endGame();
+    const result = calculateResult();
+
+    if (result) endGame(result);
 
     goToNextPlayer();
   }
 
+  function getCurrentPlayer() {
+    return currentPlayer;
+  }
+
   return {
+    init,
     startGame,
     calculateResult,
     addToBoard,
     getMarkToDisplay,
+    getCurrentPlayer,
   };
 })();
 
 const displayController = (function () {
   const cells = document.querySelectorAll('.board-cell');
+  const scoresheet1 = document.querySelector('.scoresheet--player1');
+  const scoresheet2 = document.querySelector('.scoresheet--player2');
+
+  function hideEl(el) {
+    el.classList.add('hidden');
+  }
+
+  function showEl(el) {
+    el.classList.remove('hidden');
+  }
 
   function printMove(e) {
     const playerMark = boardState.getMarkToDisplay();
+    const cell = +e.target.dataset.id;
     const row = +e.target.dataset.row;
     const col = +e.target.dataset.column;
 
@@ -87,19 +123,81 @@ const displayController = (function () {
     e.target.removeEventListener('click', printMove);
 
     // Share move to boardState
-    boardState.addToBoard(row, col);
+    boardState.addToBoard(cell, row, col);
   }
 
-  function addEvent() {
+  function showNameInputScreen() {
+    const selectScreen = document.querySelector('.screen--select');
+    const inputScreen = document.querySelector('.screen--name-input');
+
+    hideEl(selectScreen);
+    showEl(inputScreen);
+  }
+
+  function showBoard() {
+    const player1 = document.querySelector('.input--player1').value;
+    const player2 = document.querySelector('.input--player2').value;
+    const inputScreen = document.querySelector('.screen--name-input');
+    const board = document.querySelector('.screen--board');
+
+    boardState.startGame(player1, player2);
+
+    hideEl(inputScreen);
+    showEl(board);
+    showEl(scoresheet1);
+    showEl(scoresheet2);
+
+    // Render scoresheet
+    scoresheet1.querySelector('.scoresheet--player-name').textContent = player1;
+    scoresheet2.querySelector('.scoresheet--player-name').textContent = player2;
+  }
+
+  function updateScoresheet() {
+    const name1 = scoresheet1.querySelector('.scoresheet--player-name');
+    const name2 = scoresheet2.querySelector('.scoresheet--player-name');
+    const score1 = scoresheet1.querySelector('.scoresheet--player-score');
+    const score2 = scoresheet2.querySelector('.scoresheet--player-score');
+    const currentPlayer = boardState.getCurrentPlayer();
+
+    if (name1.textContent === currentPlayer.getName()) {
+      score1.textContent = currentPlayer.getScore();
+    } else if (name2.textContent === currentPlayer.getName()) {
+      score2.textContent = currentPlayer.getScore();
+    }
+  }
+
+  function addEventsOnInit() {
+    const versusPlayer = document.querySelector('.select-vs--player');
+    const versusAI = document.querySelector('.select-vs--ai');
+    const btnStart = document.querySelector('.btn-start');
+
+    versusPlayer.addEventListener('click', showNameInputScreen);
+    btnStart.addEventListener('click', showBoard);
+  }
+
+  function addEventsOnBoard() {
     cells.forEach((cell) => cell.addEventListener('click', printMove));
   }
 
-  function displayResult() {
+  function displayResult(result) {
+    const displayScreen = document.querySelector('.display-winner');
+    const displayText = document.querySelector('.display-winner--text');
+    showEl(displayScreen);
+
     cells.forEach((cell) => cell.removeEventListener('click', printMove));
+
+    if (result === 'win') {
+      displayText.textContent = `${boardState
+        .getCurrentPlayer()
+        .getName()} won!`;
+
+      updateScoresheet();
+    } else if (result === 'tie') displayText.textContent = `It's a draw!`;
   }
 
   return {
-    addEvent,
+    addEventsOnBoard,
+    addEventsOnInit,
     displayResult,
   };
 })();
@@ -137,7 +235,7 @@ const Player = (givenName, givenMark) => {
   }
 
   function incrementScore() {
-    score += 1;
+    score++;
   }
 
   return {
@@ -155,8 +253,4 @@ const Player = (givenName, givenMark) => {
   };
 };
 
-const player1 = Player('chester', 'X');
-const player2 = Player('ren', 'O');
-
-boardState.startGame();
-displayController.addEvent();
+boardState.init();
