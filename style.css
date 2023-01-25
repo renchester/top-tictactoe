@@ -7,6 +7,76 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+  --board-cell-dimension: 150px;
+  --board-border-radius: 30px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+.btn {
+  background-color: #424870;
+  color: white;
+}
+
+.logo {
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  font-size: 2rem;
+}
+
+/* BOARD STYLES */
+.screen--board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: fit-content;
+  gap: 10px;
+  border-radius: 20px;
+}
+
+.board-cell {
+  height: var(--board-cell-dimension);
+  width: var(--board-cell-dimension);
+  border: 1px solid green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cell-1 {
+  border-top-left-radius: var(--board-border-radius);
+}
+
+.cell-3 {
+  border-top-right-radius: var(--board-border-radius);
+}
+
+.cell-7 {
+  border-bottom-left-radius: var(--board-border-radius);
+}
+
+.cell-9 {
+  border-bottom-right-radius: var(--board-border-radius);
+}
+
+.btn-back {
+  padding: 10px 20px;
 }
 
 /* FOOTER */

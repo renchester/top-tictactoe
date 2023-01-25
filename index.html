@@ -8,8 +8,8 @@
 
     <link rel="stylesheet" href="style.css" />
     <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,6 +19,65 @@
     />
   </head>
   <body>
+    <div class="container">
+      <div class="logo">TIC-TAC-TOE</div>
+
+      <div class="screen--select hidden">
+        <div class="select-vs select-vs--player">
+          <span class="material-symbols-outlined"> face </span>
+          <span class="vs-text">VS</span>
+          <span class="material-symbols-outlined"> face </span>
+        </div>
+        <div class="select-vs select-vs--ai">
+          <span class="material-symbols-outlined"> face </span>
+          <span class="vs-text">VS</span>
+          <span class="material-symbols-outlined"> smart_toy </span>
+        </div>
+      </div>
+
+      <div class="screen--name-input hidden">
+        <div class="name-input--player-1">
+          <span class="material-symbols-outlined">face</span
+          ><input type="text" value="Player 1" class="input--player1" />
+        </div>
+        <div class="vs-text">VS</div>
+        <div class="name-input--player-2">
+          <span class="material-symbols-outlined">face</span>
+          <input type="text" value="Player 2" class="input--player2" />
+        </div>
+        <button type="button" class="btn btn-start">Start!</button>
+      </div>
+
+      <div class="screen--board">
+        <div class="board">
+          <div class="board-cell cell-1" data-id="1"></div>
+          <div class="board-cell cell-2" data-id="2"></div>
+          <div class="board-cell cell-3" data-id="3"></div>
+          <div class="board-cell cell-4" data-id="4"></div>
+          <div class="board-cell cell-5" data-id="5"></div>
+          <div class="board-cell cell-6" data-id="6"></div>
+          <div class="board-cell cell-7" data-id="7"></div>
+          <div class="board-cell cell-8" data-id="8"></div>
+          <div class="board-cell cell-9" data-id="9"></div>
+        </div>
+        <div class="btn btn-reset hidden">Reset All</div>
+        <button type="button" class="btn btn-back">Go back</button>
+      </div>
+    </div>
+    <footer>
+      <a
+        href="https://github.com/renchester"
+        target="_blank"
+        class="footer-link"
+        ><img
+          src="img/github-icon.png"
+          alt="Github icon"
+          width="25"
+          class="footer-img"
+        />
+        <p class="footer-desc">Developed by Renchester Ramos</p></a
+      >
+    </footer>
     <script src="script.js"></script>
   </body>
 </html>
