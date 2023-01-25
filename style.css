@@ -13,10 +13,38 @@
 :root {
   --board-cell-dimension: 150px;
   --board-border-radius: 30px;
+  --scoresheet-offset: calc(100% + 25px);
+  --box-shadow-1: 0px 10px 2px 0px rgba(55, 55, 55, 0.6);
+}
+
+@keyframes bobUpAndDown {
+  0% {
+    transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(10%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+body {
+  background: linear-gradient(
+    40deg,
+    rgb(123, 120, 255, 0.8),
+    rgb(190, 120, 255, 0.8),
+    rgb(245, 138, 231, 0.8)
+  );
 }
 
 .material-symbols-outlined {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+.container {
+  height: clamp(500px, 100vh, 1000px);
+  position: relative;
 }
 
 .btn {
@@ -29,6 +57,107 @@
   padding: 20px;
   text-align: center;
   font-size: 2rem;
+  font-weight: 1000;
+}
+
+.screen--select,
+.screen--name-input {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+/*  SELECTION SCREEN */
+
+.screen--select {
+  flex-direction: column;
+  gap: 50px;
+}
+
+.select-vs {
+  width: clamp(200px, 30vw, 400px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 30px;
+  border: 1px solid rgb(75, 75, 75);
+  border-radius: 50px;
+  background-color: white;
+  box-shadow: var(--box-shadow-1);
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: 0.1s ease-in;
+  cursor: default;
+}
+
+.select-vs:hover,
+.select-vs:active {
+  transform: scale(1.1);
+}
+
+/* NAME INPUT */
+
+.screen--name-input {
+  gap: 80px;
+  align-items: center;
+}
+
+.name-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: clamp(100px, 12vw, 200px);
+  height: 250px;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 30px;
+  box-shadow: var(--box-shadow-1);
+  padding: 20px;
+}
+
+.name-input:focus-within {
+  /* animation: infinite bobUpAndDown; */
+  animation: bobUpAndDown 0.65s linear 0s infinite;
+}
+
+.name-input input {
+  width: 100%;
+  background: none;
+  color: rgb(75, 75, 75);
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.name-input input:focus {
+  outline: none;
+  color: black;
+}
+
+.screen--name-input .vs-text {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.btn-start {
+  position: absolute;
+  top: calc(100% + 35px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 20px 30px;
+  border-radius: 20px;
+  background-color: #000000;
+  transition: 0.1s ease-in;
+}
+
+.btn-start:hover,
+.btn-start:active {
+  transform: translateX(-50%) scale(1.1);
 }
 
 /* BOARD STYLES */
@@ -41,11 +170,11 @@
 }
 
 .board {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: fit-content;
   gap: 10px;
-  border-radius: 20px;
 }
 
 .board-cell {
@@ -59,20 +188,83 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.cell-1 {
+.cell-0 {
   border-top-left-radius: var(--board-border-radius);
 }
 
-.cell-3 {
+.cell-2 {
   border-top-right-radius: var(--board-border-radius);
 }
 
-.cell-7 {
+.cell-6 {
   border-bottom-left-radius: var(--board-border-radius);
 }
 
-.cell-9 {
+.cell-8 {
   border-bottom-right-radius: var(--board-border-radius);
+}
+
+.display-winner {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.display-winner--overlay {
+  background-color: rgba(27, 10, 105, 0.8);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  border-radius: var(--board-border-radius);
+}
+
+.display-winner--text {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  z-index: 1;
+}
+
+.scoresheet--player1,
+.scoresheet--player2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  position: absolute;
+  top: 50%;
+  background-color: #8d9aee;
+  width: 120px;
+  height: 40%;
+  padding: 15px;
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-1);
+  color: white;
+  transform: translateY(-50%);
+}
+
+.scoresheet--player1 {
+  right: var(--scoresheet-offset);
+}
+
+.scoresheet--player2 {
+  left: var(--scoresheet-offset);
+}
+
+.scoresheet--icon {
+  font-size: 1.5rem;
+}
+
+.scoresheet--player-name {
+  font-size: 1.75rem;
+}
+
+.scoresheet--player-score {
+  font-size: 2rem;
 }
 
 .btn-back {
@@ -102,7 +294,7 @@ footer {
     sans-serif;
   padding-left: 1em;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
 }
 
 .footer-link:link,
