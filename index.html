@@ -20,7 +20,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="logo">TIC-TAC-TOE</div>
+      <div class="logo">TICTACTOE</div>
 
       <div class="screen--select">
         <div class="select-vs select-vs--player">
@@ -38,29 +38,44 @@
       </div>
 
       <div class="screen--name-input hidden">
-        <div class="name-input name-input--player-1">
-          <span class="name-input--icon material-symbols-outlined">face</span
-          ><input type="text" value="Player 1" class="input--player1" />
+        <div class="name-input--wrapper">
+          <div class="name-input name-input--player-1">
+            <span class="name-input--icon material-symbols-outlined">face</span
+            ><input
+              type="text"
+              value="Player 1"
+              class="input--player1"
+              onclick="this.select()"
+            />
+          </div>
+          <div class="vs-text">VS</div>
+          <div class="name-input name-input--player-2">
+            <span class="name-input--icon material-symbols-outlined">face</span>
+            <input
+              type="text"
+              value="Player 2"
+              class="input--player2"
+              onclick="this.select()"
+            />
+          </div>
         </div>
-        <div class="vs-text">VS</div>
-        <div class="name-input name-input--player-2">
-          <span class="name-input--icon material-symbols-outlined">face</span>
-          <input type="text" value="Player 2" class="input--player2" />
-        </div>
+
         <button type="button" class="btn btn-start">Start!</button>
       </div>
 
       <div class="screen--board hidden">
         <div class="board">
-          <div class="scoresheet scoresheet--player1 hidden">
+          <div
+            class="scoresheet scoresheet--player1 scoresheet--player-active hidden"
+          >
             <span class="scoresheet--icon material-symbols-outlined">face</span>
-            <div class="scoresheet--player-name">Chester</div>
+            <div class="scoresheet--player-name"></div>
             <div class="scoresheet--player-score">0</div>
           </div>
           <div class="scoresheet scoresheet--player2 hidden">
             <span class="scoresheet--icon material-symbols-outlined">face</span>
-            <div class="scoresheet--player-name">Ren</div>
-            <div class="scoresheet--player-score">1</div>
+            <div class="scoresheet--player-name"></div>
+            <div class="scoresheet--player-score">0</div>
           </div>
 
           <div
@@ -123,8 +138,12 @@
             <span class="display-winner--text">Player 1 wins!</span>
           </div>
         </div>
-        <div class="btn btn-reset hidden">Reset All</div>
-        <button type="button" class="btn btn-back">Go back</button>
+
+        <button type="button" class="btn btn-play-again hidden">
+          Play Again
+        </button>
+        <button type="button" class="btn btn-reset hidden">Reset All</button>
+        <button type="button" class="btn btn-back">&lt Go back</button>
       </div>
     </div>
     <footer>
