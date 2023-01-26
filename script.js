@@ -163,6 +163,9 @@ const displayController = (function () {
 
     // Share move to boardState
     boardState.addToBoard(row, col);
+
+    scoresheet1.classList.toggle('scoresheet--player-active');
+    scoresheet2.classList.toggle('scoresheet--player-active');
   }
 
   function showNameInputScreen() {
@@ -231,7 +234,7 @@ const displayController = (function () {
     if (result === 'win') {
       displayText.textContent = `${boardState
         .getCurrentPlayer()
-        .getName()} won!`;
+        .getName()} wins!`;
 
       updateScoresheet();
     } else if (result === 'tie') displayText.textContent = "It's a draw!";
