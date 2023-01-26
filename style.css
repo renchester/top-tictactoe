@@ -11,7 +11,7 @@
 }
 
 :root {
-  --board-cell-dimension: 125px;
+  --board-cell-dimension: clamp(75px, 20vw, 125px);
   --board-border-radius: 30px;
   --scoresheet-offset: calc(100% + 25px);
   --box-shadow-1: 0px 7px 10px 2px rgba(55, 55, 55, 0.6),
@@ -59,11 +59,11 @@ body {
 }
 
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+  font-variation-settings: 'FILL' 0, 'wght' 600, 'GRAD' 0, 'opsz' 48;
 }
 
 .container {
-  height: clamp(500px, 100vh, 1000px);
+  height: clamp(500px, 100vh, 2000px);
   position: relative;
   overflow-x: auto;
 }
@@ -72,9 +72,8 @@ body {
   margin: 0px auto;
   padding: 50px;
   text-align: center;
-  font-size: 6.5rem;
+  font-size: clamp(3rem, 1.5rem + 8vw, 5.5rem);
   font-family: 'Londrina Solid', Arial, Helvetica, sans-serif, monospace;
-  letter-spacing: 5px;
   transform: skewX(-2deg);
 }
 
@@ -95,13 +94,13 @@ body {
 }
 
 .select-vs {
-  height: 150px;
-  width: clamp(300px, 40vw, 400px);
+  height: clamp(100px, 50%, 150px);
+  width: clamp(220px, 45vw, 450px);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
-  padding: 30px;
+  gap: 20px;
+  padding: clamp(7px, 30%, 20px);
   border-radius: 25px;
   background-color: white;
   box-shadow: var(--box-shadow-1);
@@ -118,7 +117,7 @@ body {
 }
 
 .select-vs--icon.material-symbols-outlined {
-  font-size: 5rem;
+  font-size: clamp(3rem, 0.8197rem + 9.1803vw, 6.5rem);
 }
 
 .select-vs--player .select-vs--icon:first-child,
@@ -133,7 +132,7 @@ body {
 
 .select-vs .vs-text,
 .screen--name-input .vs-text {
-  font-size: 3rem;
+  font-size: clamp(2rem, 1.2525rem + 3.1475vw, 3.2rem);
   font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
   letter-spacing: 5px;
   transform: translateY(15%);
@@ -142,7 +141,7 @@ body {
 /* NAME INPUT */
 
 .screen--name-input {
-  width: clamp(300px, 50vw, 600px);
+  width: clamp(240px, 80vw, 700px);
   height: 370px;
   flex-direction: column;
   gap: 40px;
@@ -158,10 +157,11 @@ body {
 .name-input--wrapper {
   display: flex;
   align-items: center;
+  gap: 50px;
 }
 
 .name-input .material-symbols-outlined {
-  font-size: 6rem;
+  font-size: clamp(5rem, 2.6923rem + 6.1538vw, 6.5rem);
 }
 
 .name-input--player-1 .material-symbols-outlined {
@@ -197,7 +197,7 @@ body {
 }
 
 .screen--name-input .vs-text {
-  font-size: 4.2rem;
+  font-size: clamp(2.5rem, -1.3235rem + 9.4118vw, 4.5rem);
 }
 
 .btn-start {
@@ -231,6 +231,7 @@ body {
   grid-template-columns: repeat(3, 1fr);
   width: fit-content;
   gap: 7px;
+  /* z-index: 5; */
 }
 
 .board-cell {
@@ -268,6 +269,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 3s ease-in;
 }
 
 .display-winner--overlay {
@@ -283,6 +285,15 @@ body {
   font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif;
   color: white;
   z-index: 1;
+  text-align: center;
+  padding: 10px;
+}
+
+.scoresheet-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 
 .scoresheet--player1,
@@ -296,7 +307,6 @@ body {
   top: 50%;
   background-color: white;
   width: 150px;
-  height: 60%;
   padding: 15px;
   border-radius: 20px;
   box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.35);
@@ -320,6 +330,9 @@ body {
 .scoresheet--player-name {
   font-size: 1.65rem;
   font-family: 'Luckiest Guy', Arial, Helvetica, sans-serif, monospace;
+  max-width: 130px;
+  overflow: hidden;
+  text-align: center;
 }
 
 .scoresheet--player-score {
@@ -382,7 +395,7 @@ footer {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   padding-left: 1em;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: clamp(0.75rem, 0.5786rem + 0.9143vw, 0.95rem);
 }
 
 .footer-link:link,
@@ -395,4 +408,108 @@ footer {
 
 .hidden {
   display: none;
+}
+
+/*  MEDIA QUERIES */
+
+@media (max-width: 800px) {
+  .scoresheet-wrapper {
+    width: clamp(200px, 60vw, 300px);
+    height: auto;
+    top: calc(100% + 100px);
+    left: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .scoresheet--player1,
+  .scoresheet--player2,
+  .scoresheet--player-active {
+    transform: translateX(-50%);
+    animation: none;
+    position: static;
+    top: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .scoresheet--player-name {
+    flex-grow: 1;
+    max-width: none;
+    text-align: left;
+    font-size: clamp(1.2rem, 0.93rem + 1.44vw, 1.65rem);
+  }
+
+  .scoresheet--player-score {
+    font-size: clamp(1.5rem, 0.75rem + 4vw, 2.75rem);
+  }
+
+  .scoresheet--icon.material-symbols-outlined {
+    font-size: clamp(2.4rem, 1.6rem + 4.2667vw, 4rem);
+  }
+
+  .btn-back {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  @keyframes bobUpAndDown {
+    0% {
+      transform: translateY(0%);
+    }
+    50% {
+      transform: translateY(20%);
+    }
+    100% {
+      transform: translateY(0%);
+    }
+  }
+
+  .name-input--wrapper {
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .name-input--wrapper .vs-text {
+    display: none;
+  }
+
+  .name-input--player-1,
+  .name-input--player-2 {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .name-input--icon.material-symbols-outlined {
+    font-size: clamp(3rem, 1.2857rem + 9.1429vw, 5rem);
+  }
+
+  .name-input input {
+    width: 150px;
+    font-size: clamp(1.5rem, 1.0714rem + 2.2857vw, 2rem);
+  }
+}
+
+@media (max-width: 300px) {
+  .logo {
+    padding: 50px 15px;
+  }
+}
+
+@media (max-height: 600px) {
+  .screen--name-input {
+    height: 320px;
+  }
+}
+
+@media (orientation: portrait) and (max-height: 950px) {
+  footer {
+    position: relative;
+    padding: 15px;
+    margin: 0;
+  }
 }
