@@ -51,6 +51,7 @@ const boardState = (function () {
     displayController.resetScoresheet();
 
     board = Array(9).fill(null);
+    currentPlayer = player1;
     player1.resetInput();
     player2.resetInput();
   }
