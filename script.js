@@ -56,41 +56,167 @@ const boardState = (function () {
     player2.resetInput();
   }
 
-  function getComputerMove() {
+  function getEmptySquares(boardArray = board) {
     const emptyIndices = [];
 
     // Store empty slots in an array
-    for (let i = 0; i < board.length; i++) {
-      if (board[i] === null) emptyIndices.push(i);
+    for (let i = 0; i < boardArray.length; i++) {
+      if (boardArray[i] === null) emptyIndices.push(i);
     }
 
-    // Randomly choose a number from array
-    const index = Math.floor(Math.random() * (emptyIndices.length - 1));
-
-    // Return an index value for computer
-    return emptyIndices[index];
+    return emptyIndices;
   }
 
-  function calculateResult() {
+  function getComputerMove() {
+    const emptySquares = getEmptySquares();
+
+    if (emptySquares.length > 7) return Math.floor(Math.random() * 9);
+
+    const computerMark = player2.getMark();
+
+    const bestPlay = minimax(board, computerMark, player1, player2);
+    console.log(bestPlay);
+    return bestPlay.index;
+  }
+
+  function minimax(currentBoard, mark, humanObj, computerObj) {
+    const boardCopy = currentBoard;
+    const emptySquares = getEmptySquares(boardCopy);
+
+    const humanPlayer = humanObj;
+    const computerPlayer = computerObj;
+
+    const humanMark = humanPlayer.getMark();
+    const computerMark = computerPlayer.getMark();
+
+    if (calculateResultAgainstAI(humanPlayer) === 'win') {
+      return { score: -1 };
+    }
+
+    if (calculateResultAgainstAI(computerPlayer) === 'win') {
+      return { score: 1 };
+    }
+
+    if (!emptySquares.length) {
+      return { score: 0 };
+    }
+
+    const testsDone = [];
+
+    for (let i = 0; i < emptySquares.length; i++) {
+      const currentTest = {};
+
+      currentTest.index = emptySquares[i];
+
+      boardCopy[emptySquares[i]] = mark;
+
+      if (mark === computerMark) {
+        const result = minimax(
+          currentBoard,
+          humanMark,
+          humanPlayer,
+          computerPlayer,
+        );
+
+        currentTest.score = result.score;
+      } else {
+        const result = minimax(
+          boardCopy,
+          computerMark,
+          humanPlayer,
+          computerPlayer,
+        );
+
+        currentTest.score = result.score;
+      }
+
+      boardCopy[emptySquares[i]] = null;
+
+      testsDone.push(currentTest);
+    }
+
+    let bestPlay = null;
+
+    if (mark === computerMark) {
+      let bestScore = -Infinity;
+
+      for (let i = 0; i < testsDone.length; i++) {
+        if (testsDone[i].score > bestScore) {
+          bestScore = testsDone[i].score;
+          bestPlay = i;
+        }
+      }
+    } else {
+      let bestScore = Infinity;
+
+      for (let i = 0; i < testsDone.length; i++) {
+        if (testsDone[i].score < bestScore) {
+          bestScore = testsDone[i].score;
+          bestPlay = i;
+        }
+      }
+    }
+
+    // console.log(testsDone);
+
+    return testsDone[bestPlay];
+  }
+
+  function calculateResult(player = currentPlayer) {
     let result = false;
 
     // Check for tie
     if (board.every((item) => item !== null)) result = 'tie';
 
     //  Check win through rows
-    if (currentPlayer.getRow().find((x) => x === 3)) {
+    if (player.getRow().find((x) => x === 3)) {
       result = 'win';
     }
     // Check win through columns
-    if (currentPlayer.getColumn().find((x) => x === 3)) {
+    if (player.getColumn().find((x) => x === 3)) {
       result = 'win';
     }
     //  Check win through diagonals
-    if (currentPlayer.getDiagonals().find((x) => x === 3)) {
+    if (player.getDiagonals().find((x) => x === 3)) {
       result = 'win';
     }
 
     return result;
+  }
+
+  function calculateResultAgainstAI(player = currentPlayer) {
+    if (
+      (board[0] === player.getMark() &&
+        board[1] === player.getMark() &&
+        board[2] === player.getMark()) ||
+      (board[3] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[5] === player.getMark()) ||
+      (board[6] === player.getMark() &&
+        board[7] === player.getMark() &&
+        board[8] === player.getMark()) ||
+      (board[0] === player.getMark() &&
+        board[3] === player.getMark() &&
+        board[6] === player.getMark()) ||
+      (board[1] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[7] === player.getMark()) ||
+      (board[2] === player.getMark() &&
+        board[5] === player.getMark() &&
+        board[8] === player.getMark()) ||
+      (board[0] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[8] === player.getMark()) ||
+      (board[2] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[6] === player.getMark())
+    ) {
+      return 'win';
+    } else if (board.every((item) => item !== null)) {
+      return 'tie';
+    } else {
+      return false;
+    }
   }
 
   function checkDiagonals(row, col) {
@@ -195,7 +321,7 @@ const displayController = (function () {
     computerChoice.removeEventListener('click', printMove);
 
     // Save computer move to board state
-    boardState.getComputerMove();
+    // boardState.getComputerMove();
     boardState.analyzeBoard(rowOfChoice, columnOfChoice, choiceID);
   }
 
