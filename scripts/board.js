@@ -57,6 +57,65 @@ const boardState = (function () {
     player2.resetInput();
   }
 
+  function calculateResult(player = currentPlayer) {
+    let result = false;
+
+    // Check for tie
+    if (board.every((item) => item !== null)) result = 'tie';
+
+    //  Check win through rows
+    if (player.getRow().find((x) => x === 3)) {
+      result = 'win';
+    }
+    // Check win through columns
+    if (player.getColumn().find((x) => x === 3)) {
+      result = 'win';
+    }
+    //  Check win through diagonals
+    if (player.getDiagonals().find((x) => x === 3)) {
+      result = 'win';
+    }
+
+    return result;
+  }
+
+  function calculateResultAgainstAI(player = currentPlayer) {
+    if (
+      (board[0] === player.getMark() &&
+        board[1] === player.getMark() &&
+        board[2] === player.getMark()) ||
+      (board[3] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[5] === player.getMark()) ||
+      (board[6] === player.getMark() &&
+        board[7] === player.getMark() &&
+        board[8] === player.getMark()) ||
+      (board[0] === player.getMark() &&
+        board[3] === player.getMark() &&
+        board[6] === player.getMark()) ||
+      (board[1] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[7] === player.getMark()) ||
+      (board[2] === player.getMark() &&
+        board[5] === player.getMark() &&
+        board[8] === player.getMark()) ||
+      (board[0] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[8] === player.getMark()) ||
+      (board[2] === player.getMark() &&
+        board[4] === player.getMark() &&
+        board[6] === player.getMark())
+    ) {
+      return 'win';
+    }
+
+    if (board.every((item) => item !== null)) {
+      return 'tie';
+    }
+
+    return false;
+  }
+
   function getEmptySquares(boardArray = board) {
     const emptyIndices = [];
 
@@ -66,17 +125,6 @@ const boardState = (function () {
     }
 
     return emptyIndices;
-  }
-
-  function getComputerMove() {
-    const emptySquares = getEmptySquares();
-
-    if (emptySquares.length > 7) return Math.floor(Math.random() * 9);
-
-    const computerMark = player2.getMark();
-
-    const bestPlay = minimax(board, computerMark, player1, player2);
-    return bestPlay.index;
   }
 
   function minimax(currentBoard, mark, humanObj, computerObj) {
@@ -159,63 +207,15 @@ const boardState = (function () {
     return testsDone[bestPlay];
   }
 
-  function calculateResult(player = currentPlayer) {
-    let result = false;
+  function getComputerMove() {
+    const emptySquares = getEmptySquares();
 
-    // Check for tie
-    if (board.every((item) => item !== null)) result = 'tie';
+    if (emptySquares.length > 7) return Math.floor(Math.random() * 9);
 
-    //  Check win through rows
-    if (player.getRow().find((x) => x === 3)) {
-      result = 'win';
-    }
-    // Check win through columns
-    if (player.getColumn().find((x) => x === 3)) {
-      result = 'win';
-    }
-    //  Check win through diagonals
-    if (player.getDiagonals().find((x) => x === 3)) {
-      result = 'win';
-    }
+    const computerMark = player2.getMark();
 
-    return result;
-  }
-
-  function calculateResultAgainstAI(player = currentPlayer) {
-    if (
-      (board[0] === player.getMark() &&
-        board[1] === player.getMark() &&
-        board[2] === player.getMark()) ||
-      (board[3] === player.getMark() &&
-        board[4] === player.getMark() &&
-        board[5] === player.getMark()) ||
-      (board[6] === player.getMark() &&
-        board[7] === player.getMark() &&
-        board[8] === player.getMark()) ||
-      (board[0] === player.getMark() &&
-        board[3] === player.getMark() &&
-        board[6] === player.getMark()) ||
-      (board[1] === player.getMark() &&
-        board[4] === player.getMark() &&
-        board[7] === player.getMark()) ||
-      (board[2] === player.getMark() &&
-        board[5] === player.getMark() &&
-        board[8] === player.getMark()) ||
-      (board[0] === player.getMark() &&
-        board[4] === player.getMark() &&
-        board[8] === player.getMark()) ||
-      (board[2] === player.getMark() &&
-        board[4] === player.getMark() &&
-        board[6] === player.getMark())
-    ) {
-      return 'win';
-    }
-
-    if (board.every((item) => item !== null)) {
-      return 'tie';
-    }
-
-    return false;
+    const bestPlay = minimax(board, computerMark, player1, player2);
+    return bestPlay.index;
   }
 
   function checkDiagonals(row, col) {
