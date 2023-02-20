@@ -210,7 +210,8 @@ const boardState = (function () {
   function getComputerMove() {
     const emptySquares = getEmptySquares();
 
-    if (emptySquares.length > 7) return Math.floor(Math.random() * 9);
+    if (emptySquares.length > 8)
+      return emptySquares[Math.floor(Math.random() * 9)];
 
     const computerMark = player2.getMark();
 
