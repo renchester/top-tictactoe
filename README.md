@@ -11,7 +11,7 @@ The game has two modes:
 1. _Player vs. Player (PvP)_
    Choosing this mode displays an interface that asks for both player's names which will be referenced in the scoresheet and result display.
 2. _Player vs. Computer (PvC)_
-   This mode allows the user to play against a computer. For now, only an easy mode is available--where a random empty cell in the board is filled.
+   This mode allows the user to play against a computer. The [minimax algorithm](https://towardsdatascience.com/how-a-chess-playing-computer-thinks-about-its-next-move-8f028bd0e7b1?gi=aa0f2020509c) is used to generate the computer's moves--ensuring that the AI is impossible to beat.
 
 Both modes are available in the initial screen.
 
@@ -19,7 +19,7 @@ Both modes are available in the initial screen.
 
 ### Code Structure
 
-Both the board state and display controller are stored in their own respective modules, with a player factory function to generate player properties and methods. The board and display modules have private and public methods used to facilitate gameplay. Thanks to the module pattern, the displayed elements of the game interact separately from the actual game state to prevent possible vulnerabilities.
+Both the board state and display controller are stored in their own respective modules, with a player factory function to generate player properties and methods. The board and display modules have private and public methods used to facilitate gameplay. Thanks to the revealing module pattern, the displayed elements of the game interact separately from the actual game state to prevent possible vulnerabilities.
 
 ### Display
 
